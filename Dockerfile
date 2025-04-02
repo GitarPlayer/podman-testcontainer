@@ -83,9 +83,11 @@ ENV JAVA_HOME="/usr/lib/jvm/jre" \
 #     rm -rf /etc/pki/entitlement/* 
 RUN groupadd -g 53967 build && \
     useradd -u 53967 -g 53967 -m build
-RUN echo "build:60000:65536" > /etc/subuid && \
-    echo "build:60000:65536" > /etc/subgid  
-
-USER 53967
+RUN echo "podman:1:999" > /etc/subuid && \
+    echo "podman1001:5999" >>/etc/subuid && \
+    echo "build:60000:65536" >> /etc/subuid && \
+    echo "podman:1:999" > /etc/subgid && \
+    echo "podman1001:5999" >>/etc/subgid && \
+    echo "build:60000:65536" >> /etc/subgid && \
 
 USER 1001
