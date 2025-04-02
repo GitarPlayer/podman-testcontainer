@@ -30,8 +30,9 @@ RUN dnf install -y \
     && groupmod -g 53967 build \
     && mv /home/build/.local /tmp/.local_old \
     && mkdir -p /home/build/.local/share/containers \
-    #&& chown -R build:build /home/build/.local \
-    && chown -R 53967:build /home/build /var/tmp/containers/storage \
+    #&& chown -R build:build /home/build/.local
+    
+RUN chown -R 53967:build /home/build /var/tmp/containers/storage \
     && echo build:60000:65536 > /etc/subuid \
     && echo build:60000:65536 > /etc/subgid \
     # Use VFS since fuse does not work
