@@ -88,6 +88,6 @@ RUN echo "podman:1:999" > /etc/subuid && \
     echo "build:60000:65536" >> /etc/subuid && \
     echo "podman:1:999" > /etc/subgid && \
     echo "podman1001:5999" >>/etc/subgid && \
-    echo "build:60000:65536" >> /etc/subgid && \
+    echo "build:60000:65536" >> /etc/subgid 
 
 USER 1001
