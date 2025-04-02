@@ -9,7 +9,7 @@ USER root
 
 ENV TZ="Europe/Zurich"
 ENV HELM_VERSION="v3.14.4"
-
+WORKDIR /home/build/
 
 # Install essential packages, skipping cert addition
 RUN dnf install -y \
@@ -75,4 +75,4 @@ RUN sed -i 's|# rootless_storage_path = "$HOME/.local/share/containers/storage"|
     rm -rf /etc/pki/entitlement/* 
 
 USER 53967
-WORKDIR /home/build/
+
