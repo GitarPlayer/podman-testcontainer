@@ -23,26 +23,32 @@ RUN dnf install -y \
       procps-ng \
       zip \
       unzip \
+# do the buildah stuff here
     && mkdir -p /var/tmp/containers/storage \
     && chmod -R 777 /var/tmp/containers/storage \
-    # Adjust user and group for build
-    && usermod -u 53967 build || true \
-    && groupmod -g 53967 build || true \
-    && chown -R build:build /home/build /var/tmp/containers/storage \
+    && usermod -u 53967 build \
+    && groupmod -g 53967 build \
+    && mv /home/build/.local /tmp/.local_old \
+    && mkdir -p /home/build/.local/share/containers \
+    #&& chown -R build:build /home/build/.local \
+    && chown -R 53967:build /home/build /var/tmp/containers/storage \
     && echo build:60000:65536 > /etc/subuid \
     && echo build:60000:65536 > /etc/subgid \
     # Use VFS since fuse does not work
-    && sed -i 's/driver = "overlay"/driver = "vfs"/' /etc/containers/storage.conf \
+    #&& sed -i 's/driver = "overlay"/driver = "vfs"/' /etc/containers/storage.conf \
+    && mkdir -p /home/build/.config/containers \
+    && (echo '[storage]';echo 'driver = "overlay"') > /home/build/.config/containers/storage.conf \
     && sed -i 's/# log_level = "7"/log_level = "4"/' /etc/containers/storage.conf \
     && sed -i 's|# rootless_storage_path = "$HOME/.local/share/containers/storage"|rootless_storage_path = "/var/tmp/containers/storage"|' /etc/containers/storage.conf \
     # Use chroot since the default runc does not work when running rootless
-    && echo "export BUILDAH_ISOLATION=chroot" >> /etc/bashrc \
-    # Allow insecure connection to local registry in namespace
+    #&& echo "export BUILDAH_ISOLATION=chroot" >> /etc/bashrc \
+    && echo "export BUILDAH_ISOLATION=chroot" >> /home/build/.bashrc \
+    # allow insecure connection to local registry in namespace (for testing)
     && echo "[[registry]]" >/etc/containers/registries.conf.d/rchregistry.conf \
     && echo 'location = "image-repo:5000"' >>/etc/containers/registries.conf.d/rchregistry.conf \
     && echo "insecure = true" >>/etc/containers/registries.conf.d/rchregistry.conf \
-    # Ensure correct owner
-    && chown -R build:build /home/build/.local || true \
+   && chown -R build:build /home/build/.local \
+
     # cosign binary
     && curl -O -L "https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64" \
     && mv cosign-linux-amd64 /usr/local/bin/cosign \
@@ -68,10 +74,17 @@ RUN dnf install -y \
     # skopeo
     && mkdir /run/containers \
     && chmod -R 777 /run/containers \
-    # Adjust ownership
-    && chown 53967 /home/build/.local/share/containers || true \
-    # Cleanup
-    && dnf clean all
+    # buildah
+    && pwd \
+    && id \
+    && ls -al /home/build/.local/share/ \
+    && chown -R 53967 /home/build/ \
+    && ls -aln /home/ \
+    && cat /etc/passwd \
+
+    # cleanup the system
+    && yum clean all \
+    && rm -rf /etc/pki/entitlement/*
 
 USER 53967
-WORKDIR /home/build
+WORKDIR /home/build/
