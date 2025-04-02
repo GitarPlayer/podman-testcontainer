@@ -50,8 +50,6 @@ RUN sed -i 's|# rootless_storage_path = "$HOME/.local/share/containers/storage"|
     mv cosign-linux-amd64 /usr/local/bin/cosign && \
     chmod +x /usr/local/bin/cosign && \
     yum -y update && \
-    # Install cekit
-    yum -y install cekit && \
     # yq binary
     BINARY=yq_linux_amd64 && \
     LATEST=$(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep yq_linux_amd64 | grep -v "tar.gz" | cut -d '"' -f 4 ) && \
