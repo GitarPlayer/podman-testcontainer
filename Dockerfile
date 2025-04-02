@@ -81,7 +81,11 @@ ENV JAVA_HOME="/usr/lib/jvm/jre" \
 #     # cleanup the system
 #     yum clean all && \
 #     rm -rf /etc/pki/entitlement/* 
+RUN groupadd -g 53967 build && \
+    useradd -u 53967 -g 53967 -m build
+RUN echo "build:60000:65536" > /etc/subuid && \
+    echo "build:60000:65536" > /etc/subgid  
 
-# USER 53967
+USER 53967
 
 USER 1001
