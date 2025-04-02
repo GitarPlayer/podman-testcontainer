@@ -26,8 +26,8 @@ RUN dnf install -y \
 # do the buildah stuff here
     && mkdir -p /var/tmp/containers/storage \
     && chmod -R 777 /var/tmp/containers/storage \
-    && usermod -u 53967 build \
-    && groupmod -g 53967 build \
+    && groupadd -g 53967 build \
+    && useradd -u 53967 -g 53967 -m build \
     && mv /home/build/.local /tmp/.local_old \
     && mkdir -p /home/build/.local/share/containers \
     #&& chown -R build:build /home/build/.local
