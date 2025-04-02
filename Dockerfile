@@ -23,7 +23,7 @@ WORKDIR /home/build/
 #       zip \
 #       unzip 
 
-RUN dnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y java-21-openjdk-headless maven && \
+RUN dnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y java-21-openjdk-headless maven podman-remote && \
     chmod -R 770 /home/build/ && \
     chgrp -R 0 /home/build/ 
 ENV JAVA_HOME="/usr/lib/jvm/jre" \
