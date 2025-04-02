@@ -10,6 +10,7 @@ ENV HELM_VERSION="v3.14.4"
 WORKDIR /home/build/
 
 
+
 # Install essential packages, skipping cert addition
 # RUN dnf install -y \
 #       nss-tools \
@@ -22,7 +23,9 @@ WORKDIR /home/build/
 #       zip \
 #       unzip 
 
-RUN dnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y java-21-openjdk-headless maven
+RUN dnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y java-21-openjdk-headless maven && \
+    chmod -R 770 /home/build/ && \
+    chgrp -R 0 /home/build/ 
 ENV JAVA_HOME="/usr/lib/jvm/jre" \
     JAVA_VERSION="21" \
     JAVA_VENDOR="openjdk" \
