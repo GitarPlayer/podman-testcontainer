@@ -25,11 +25,11 @@ RUN dnf install -y \
       unzip 
 # do the buildah stuff here
 
-RUN mkdir -pv /var/tmp/containers/storage \
-    && chmod -R 777 /var/tmp/containers/storage \
-    && groupadd -g 53967 build \
-    && useradd -u 53967 -g 53967 -m build \
-    && mkdir -pv /home/build/.local/share/containers \
+RUN mkdir -pv /var/tmp/containers/storage && \
+    chmod -R 777 /var/tmp/containers/storage && \
+    groupadd -g 53967 build && \
+    useradd -u 53967 -g 53967 -m build && \
+    mkdir -pv /home/build/.local/share/containers 
     #&& chown -R build:build /home/build/.local
     
 RUN chown -R 53967:build /home/build /var/tmp/containers/storage \
