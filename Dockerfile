@@ -55,11 +55,6 @@ RUN sed -i 's|# rootless_storage_path = "$HOME/.local/share/containers/storage"|
     LATEST=$(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep yq_linux_amd64 | grep -v "tar.gz" | cut -d '"' -f 4 ) && \
     curl -fsSL "$LATEST" -o /usr/local/bin/yq && \
     chmod +x /usr/local/bin/yq && \
-    # helm client
-    curl  -fsSL "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz" \
-      | tar -zxf - -C /usr/local/bin/ && \
-    mv /usr/local/bin/helm-linux-amd64 /usr/local/bin/helm && \
-    chmod +x /usr/local/bin/helm && \
     # podman prereqs
     mkdir /.config /.kube /.cache && \
     chmod 777 /.config /.kube /.cache && \
