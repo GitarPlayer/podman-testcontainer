@@ -38,8 +38,9 @@ RUN dnf install -y \
     #&& sed -i 's/driver = "overlay"/driver = "vfs"/' /etc/containers/storage.conf \
     && mkdir -p /home/build/.config/containers \
     && (echo '[storage]';echo 'driver = "overlay"') > /home/build/.config/containers/storage.conf \
-    && sed -i 's/# log_level = "7"/log_level = "4"/' /etc/containers/storage.conf \
-    && sed -i 's|# rootless_storage_path = "$HOME/.local/share/containers/storage"|rootless_storage_path = "/var/tmp/containers/storage"|' /etc/containers/storage.conf \
+    && sed -i 's/# log_level = "7"/log_level = "4"/' /etc/containers/storage.conf 
+
+RUN sed -i 's|# rootless_storage_path = "$HOME/.local/share/containers/storage"|rootless_storage_path = "/var/tmp/containers/storage"|' /etc/containers/storage.conf \
     # Use chroot since the default runc does not work when running rootless
     #&& echo "export BUILDAH_ISOLATION=chroot" >> /etc/bashrc \
     && echo "export BUILDAH_ISOLATION=chroot" >> /home/build/.bashrc \
