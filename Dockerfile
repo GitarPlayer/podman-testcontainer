@@ -26,7 +26,12 @@ WORKDIR /home/build/
 RUN dnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y java-21-openjdk-headless maven podman-remote jq && \
     chmod -R 770 /home/build/ && \
     chgrp -R 0 /home/build/ && \    
-    chown -R 1000 /home/build/
+    chown -R 1000 /home/build/ && \  
+    sed -i 's/driver = "overlay"/driver = "vfs"/' /etc/containers/storage.conf && \  
+     mkdir -p /home/build/.config/containers && \  
+    (echo '[storage]';echo 'driver = "overlay"') > /home/build/.config/containers/storage.conf && \  
+    sed -i 's/# log_level = "7"/log_level = "4"/' /etc/containers/storage.conf 
+
 ENV JAVA_HOME="/usr/lib/jvm/jre" \
     JAVA_VERSION="21" \
     JAVA_VENDOR="openjdk" \
